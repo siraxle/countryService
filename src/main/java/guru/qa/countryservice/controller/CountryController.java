@@ -30,9 +30,9 @@ public class CountryController {
         return ResponseEntity.ok(countryService.getCountryByCode(code));
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<CountryResponse> createCountry(
-            @Valid @RequestBody CountryRequest request) {  // ДОБАВЛЕН @Valid @RequestBody
+            @Valid @RequestBody CountryRequest request) {
         CountryResponse response = countryService.createCountry(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

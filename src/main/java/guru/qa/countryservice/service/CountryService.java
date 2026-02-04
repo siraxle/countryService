@@ -67,7 +67,7 @@ public class CountryService {
 
     private CountryResponse mapToResponse(Country country) {
         return new CountryResponse(
-                country.getId().toString(), // Преобразование UUID в String
+                country.getId().toString(),
                 country.getName(),
                 country.getCode(),
                 country.getCoordinates()

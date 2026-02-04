@@ -8,4 +8,3 @@ CREATE TABLE IF NOT EXISTS country (
     );
 
 CREATE UNIQUE INDEX IF NOT EXISTS uk_country_code ON country(code);
-CREATE INDEX IF NOT EXISTS idx_country_code ON country(code);

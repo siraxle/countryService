@@ -10,7 +10,7 @@ public class CountryRequest {
     private String name;
 
     @NotBlank(message = "Country code is required")
-    @Size(min = 2, max = 3, message = "Country code must be 2-3 characters") // Изменено
+    @Size(min = 2, max = 3)
     private String code;
 
     private String coordinates;
