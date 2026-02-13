@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package guru.qa.grpc.countrycatalog;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = 'guru.qa.grpc.countrycatalog';
+option java_outer_classname = "CountrycatalogProto";
+
+service CountrycatalogService {
+  // Unary endpoints
+  rpc GetCountry(GetCountryRequest) returns (CountryResponse) {}
+  rpc AddCountry(CountryRequest) returns (CountryResponse) {}
+  rpc UpdateCountry(UpdateCountryRequest) returns (CountryResponse) {}
+  rpc DeleteCountry(DeleteCountryRequest) returns (DeleteCountryResponse) {}
+
+  // Server-streaming: получить все страны
+  rpc GetAllCountries(google.protobuf.Empty) returns (stream CountryResponse) {}
+
+  // Client-streaming: стриминговое добавление стран
+  rpc AddCountriesStream(stream CountryRequest) returns (AddCountriesResponse) {}
+}
+
+message GetCountryRequest {
+  string code = 1;
+}
+
+message DeleteCountryRequest {
+  string code = 1;
+}
+
+message CountryResponse {
+  string id = 1;
+  string name = 2;
+  string code = 3;
+  string coordinates = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message CountryRequest {
+  string name = 1;
+  string code = 2;
+  string coordinates = 3;
+}
+
+message UpdateCountryRequest {
+  string code = 1;
+  string name = 2;
+}
+
+message DeleteCountryResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message AddCountriesResponse {
+  int32 total_received = 1;
+  int32 successfully_added = 2;
+  repeated string failed_codes = 3;
+  string message = 4;
+}
