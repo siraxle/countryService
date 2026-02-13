@@ -18,7 +18,13 @@ spring:
       idle-timeout: 10000
       max-lifetime: 1000
       auto-commit: true
-
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+    schema:
+      printer:
+        enabled: true
   jpa:
     hibernate:
       ddl-auto: update

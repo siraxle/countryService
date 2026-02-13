@@ -1,0 +1,30 @@
+scalar UUID
+scalar DateTime
+
+type Query {
+    getAllCountries: [Country!]!
+    getCountryByCode(code: String!): Country!
+}
+
+type Mutation {
+    createCountry(input: CountryInput!): Country!
+    updateCountry(code: String!, input: CountryUpdateInput!): Country!
+    deleteCountry(code: String!): Boolean!
+}
+
+type Country {
+    id: UUID!
+    name: String!
+    code: String!
+    coordinates: String
+}
+
+input CountryInput {
+    name: String!
+    code: String!
+    coordinates: String
+}
+
+input CountryUpdateInput {
+    name: String!
+}
