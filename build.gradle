@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.flywaydb:flyway-database-postgresql:11.13.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.42'
     compileOnly 'org.projectlombok:lombok:1.18.42'
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
+    implementation 'com.graphql-java:graphql-java-extended-scalars:24.0'
 }
 
 tasks.named('test') {
