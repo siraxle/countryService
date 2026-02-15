@@ -16,8 +16,8 @@ public class CountryGraphQLQueryController {
     private final CountryService countryService;
 
     @QueryMapping
-    public List<CountryResponse> getAllCountries() {
-        return countryService.getAllCountries();
+    public List<CountryResponse> listCountries() {
+        return countryService.listCountries();
     }
 
     @QueryMapping

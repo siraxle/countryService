@@ -17,7 +17,7 @@ service CountrycatalogService {
   rpc DeleteCountry(DeleteCountryRequest) returns (DeleteCountryResponse) {}
 
   // Server-streaming: получить все страны
-  rpc GetAllCountries(google.protobuf.Empty) returns (stream CountryResponse) {}
+  rpc ListCountries(google.protobuf.Empty) returns (stream CountryResponse) {}
 
   // Client-streaming: стриминговое добавление стран
   rpc AddCountriesStream(stream CountryRequest) returns (AddCountriesResponse) {}

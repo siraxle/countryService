@@ -2,7 +2,7 @@ scalar UUID
 scalar DateTime
 
 type Query {
-    getAllCountries: [Country!]!
+    listCountries: [Country!]!
     getCountryByCode(code: String!): Country!
 }
 

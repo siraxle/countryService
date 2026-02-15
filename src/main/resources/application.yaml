@@ -25,6 +25,7 @@ spring:
     schema:
       printer:
         enabled: true
+    path: /graphql
   jpa:
     hibernate:
       ddl-auto: update
@@ -45,10 +46,7 @@ spring:
     locations: classpath:db/migration
     validate-on-migrate: true
 
-  graphql:
-    graphiql:
-      enabled: true
-    path: /graphql
+
 
 server:
   port: 8383

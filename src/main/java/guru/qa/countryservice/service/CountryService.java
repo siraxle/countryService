@@ -19,7 +19,7 @@ public class CountryService {
 
     private final CountryRepository countryRepository;
 
-    public List<CountryResponse> getAllCountries() {
+    public List<CountryResponse> listCountries() {
         return countryRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)

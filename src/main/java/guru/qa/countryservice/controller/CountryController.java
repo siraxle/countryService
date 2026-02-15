@@ -20,8 +20,8 @@ public class CountryController {
     private final CountryService countryService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<CountryResponse>> getAllCountries() {
-        List<CountryResponse> countries = countryService.getAllCountries();
+    public ResponseEntity<List<CountryResponse>> listCountries() {
+        List<CountryResponse> countries = countryService.listCountries();
         return ResponseEntity.ok(countries);
     }
 

@@ -105,10 +105,10 @@ public class GrpcCountryService extends CountrycatalogServiceGrpc.Countrycatalog
     }
 
     @Override
-    public void getAllCountries(Empty request,
+    public void listCountries(Empty request,
                                 StreamObserver<guru.qa.grpc.countrycatalog.CountryResponse> responseObserver) {
         try {
-            List<CountryResponse> countries = countryService.getAllCountries();
+            List<CountryResponse> countries = countryService.listCountries();
 
             for (CountryResponse country : countries) {
                 responseObserver.onNext(mapToProtoCountry(country));
