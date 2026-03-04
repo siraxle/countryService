@@ -55,3 +55,7 @@ logging:
   level:
     guru.qa.countryservice: DEBUG
     org.springframework.grpc: DEBUG
+
+soap:
+  wsdl:
+    path: /ws/countries.wsdl
