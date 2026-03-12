@@ -7,6 +7,12 @@ spring:
       servlet:
         enabled: false
 
+  soap:
+    service:
+      location: /ws
+      port-type-name: CountryPort
+      target-namespace: http://qa.guru/country-service
+
   datasource:
     url: 'jdbc:postgresql://localhost:5432/countrydb'
     username: postgres

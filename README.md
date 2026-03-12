@@ -39,6 +39,26 @@ docker run --name postgres-country \
 -p 5432:5432 \
 -d postgres:15
 
+Запустить существующий остановленный контейнер:
+bash
+docker start postgres-country
+3. Остановить работающий контейнер:
+   bash
+   docker stop postgres-country
+4. Перезапустить контейнер:
+   bash
+   docker restart postgres-country
+5. Посмотреть логи контейнера:
+   bash
+   docker logs postgres-country
+6. Подключиться к контейнеру для проверки:
+   bash
+# Подключиться к PostgreSQL внутри контейнера
+docker exec -it postgres-country psql -U postgres -d countrydb
+
+# Выполнить SQL запрос прямо из командной строки
+docker exec -it postgres-country psql -U postgres -d countrydb -c "SELECT * FROM country;"
+
 # Проверить, что контейнер запущен
 docker ps
 
