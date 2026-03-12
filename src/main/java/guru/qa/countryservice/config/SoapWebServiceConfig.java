@@ -33,7 +33,8 @@ public class SoapWebServiceConfig {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(applicationContext);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, soapLocation + "/*");
+
+        return new ServletRegistrationBean<>(servlet, soapLocation, soapLocation + "/*");
     }
 
     @Bean(name = "countries")
