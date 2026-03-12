@@ -4,6 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.google.cloud.tools.jib' version '3.4.1'
     id 'com.google.protobuf' version '0.9.4'
+    id 'com.github.edeandrea.xjc-generation' version '1.6'
 }
 
 group = 'guru.qa'
@@ -28,49 +29,119 @@ dependencyManagement {
     }
 }
 
+// Определяем версии для переиспользования
+ext {
+    postgresqlVersion = '42.7.3'
+    flywayVersion = '10.17.1'
+    graphqlScalarsVersion = '22.0'
+    jacksonVersion = '2.17.2'
+    lombokVersion = '1.18.36'
+    h2Version = '2.2.224'
+
+    // Исправленные версии для protobuf и grpc
+    protobufVersion = '3.25.5'  // Более стабильная версия
+    grpcVersion = '1.68.1'
+
+    jaxbVersion = '4.0.5'
+    jakartaVersion = '4.0.2'
+    wsdl4jVersion = '1.6.3'
+}
+
 dependencies {
     // Spring Boot Starters
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-graphql'
 
     // Database
-    runtimeOnly 'org.postgresql:postgresql:42.7.3'
-    implementation 'org.flywaydb:flyway-core:10.17.1'
-    implementation 'org.flywaydb:flyway-database-postgresql:10.17.1'
+    runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+    implementation "org.flywaydb:flyway-database-postgresql:${flywayVersion}"
 
     // GraphQL
-    implementation 'com.graphql-java:graphql-java-extended-scalars:22.0'
+    implementation "com.graphql-java:graphql-java-extended-scalars:${graphqlScalarsVersion}"
 
-    // gRPC - используем те же зависимости что и в photocatalog
+    // gRPC - исправленные версии
     implementation 'org.springframework.grpc:spring-grpc-spring-boot-starter'
-    implementation 'io.grpc:grpc-services'
-    implementation 'io.grpc:grpc-netty-shaded'
+    implementation "io.grpc:grpc-services:${grpcVersion}"
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+    implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
 
     // JSON
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+
+    // SOAP dependencies
+    implementation "wsdl4j:wsdl4j:${wsdl4jVersion}"
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jakartaVersion}"
+    implementation "jakarta.xml.ws:jakarta.xml.ws-api:${jakartaVersion}"
+    implementation "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
+    implementation "com.sun.xml.bind:jaxb-core:${jaxbVersion}"
 
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.36'
-    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    // Test
+    // XJC для генерации
+    xjc "org.glassfish.jaxb:jaxb-xjc:${jaxbVersion}"
+    xjc "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
+    xjc "com.sun.xml.bind:jaxb-core:${jaxbVersion}"
+    xjc "jakarta.xml.bind:jakarta.xml.bind-api:${jakartaVersion}"
+
+    // Test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "com.h2database:h2:${h2Version}"
+    testImplementation "io.grpc:grpc-testing:${grpcVersion}"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
 
-    // Protobuf
-    implementation "com.google.protobuf:protobuf-java-util:${dependencyManagement.importedProperties['protobuf-java.version']}"
+// Исключаем конфликтующие зависимости
+configurations {
+    all {
+        exclude group: 'javax.xml.bind', module: 'jaxb-api'
+        exclude group: 'javax.xml.ws', module: 'jaxws-api'
+    }
+    compileClasspath {
+        resolutionStrategy.force "com.google.protobuf:protobuf-java:${protobufVersion}"
+        resolutionStrategy.force "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+    }
+}
+
+xjcGeneration {
+    defaultAdditionalXjcOptions = ['encoding': 'UTF-8']
+    schemas {
+        countrySchema {
+            schemaRootDir = "$projectDir/src/main/resources"
+            schemaFile = 'xsd/country.xsd'
+            javaPackageName = 'guru.qa.countryservice.soap'
+            sourceSet = 'main'
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir('src/main/java')
+            srcDir("$buildDir/generated-sources/main/xjc")
+            srcDir("$buildDir/generated/source/proto/main/java")
+            srcDir("$buildDir/generated/source/proto/main/grpc")
+        }
+    }
 }
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:${dependencyManagement.importedProperties['protobuf-java.version']}"
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
     }
     plugins {
         grpc {
-            artifact = "io.grpc:protoc-gen-grpc-java:${dependencyManagement.importedProperties['grpc.version']}"
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
         }
     }
     generateProtoTasks {
@@ -84,4 +155,47 @@ protobuf {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Правильная зависимость компиляции от генерации XJC и protobuf
+tasks.compileJava.dependsOn tasks.named('xjcGeneration')
+tasks.compileJava.dependsOn tasks.named('generateProto')
+
+// Решение проблемы с дубликатами в bootJar
+tasks.named('bootJar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Для всех Copy-задач устанавливаем стратегию
+tasks.withType(Copy).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Настройка JIB
+jib {
+    container {
+        ports = ['8383', '9090']
+        jvmFlags = ["-Dspring.profiles.active=${System.getProperty('spring.profiles.active', 'local')}"]
+        environment = [
+                'TZ': 'Europe/Moscow'
+        ]
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        labels = [
+                'maintainer': 'guru.qa',
+                'version': "${project.version}".toString()
+        ]
+    }
+    from {
+        image = 'eclipse-temurin:21-jre'
+        platforms {
+            platform {
+                architecture = 'amd64'
+                os = 'linux'
+            }
+        }
+    }
+    to {
+        image = "country-service"
+        tags = ['latest', "${project.version}"]
+    }
 }

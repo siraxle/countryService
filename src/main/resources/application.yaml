@@ -7,6 +7,15 @@ spring:
       servlet:
         enabled: false
 
+  soap:
+    location: /ws
+    namespace: http://qa.guru/country-service
+    target-namespace: http://qa.guru/country-service
+    port-type-name: CountryPort
+
+    wsdl:
+      path: /ws/countries.wsdl
+
   datasource:
     url: 'jdbc:postgresql://localhost:5432/countrydb'
     username: postgres
@@ -53,5 +62,9 @@ server:
 
 logging:
   level:
-    guru.qa.countryservice: DEBUG
-    org.springframework.grpc: DEBUG
+    guru.qa.countryclient: INFO
+    org.springframework.ws: INFO
+
+soap:
+  wsdl:
+    path: /ws/countries.wsdl

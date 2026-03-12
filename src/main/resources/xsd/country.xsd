@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://qa.guru/country-service"
+           xmlns:tns="http://qa.guru/country-service"
+           elementFormDefault="qualified">
+
+    <!-- Запросы -->
+    <xs:element name="getCountryRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="code" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllCountriesRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="createCountryRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="code" type="xs:string"/>
+                <xs:element name="coordinates" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateCountryRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="code" type="xs:string"/>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="coordinates" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteCountryRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="code" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Ответы -->
+    <xs:element name="getCountryResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="country">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="id" type="xs:string"/>
+                            <xs:element name="name" type="xs:string"/>
+                            <xs:element name="code" type="xs:string"/>
+                            <xs:element name="coordinates" type="xs:string" minOccurs="0"/>
+                            <xs:element name="createdDate" type="xs:dateTime" minOccurs="0"/>
+                            <xs:element name="modifiedDate" type="xs:dateTime" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllCountriesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="countries" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="id" type="xs:string"/>
+                            <xs:element name="name" type="xs:string"/>
+                            <xs:element name="code" type="xs:string"/>
+                            <xs:element name="coordinates" type="xs:string" minOccurs="0"/>
+                            <xs:element name="createdDate" type="xs:dateTime" minOccurs="0"/>
+                            <xs:element name="modifiedDate" type="xs:dateTime" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createCountryResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="country">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="id" type="xs:string"/>
+                            <xs:element name="name" type="xs:string"/>
+                            <xs:element name="code" type="xs:string"/>
+                            <xs:element name="coordinates" type="xs:string" minOccurs="0"/>
+                            <xs:element name="createdDate" type="xs:dateTime" minOccurs="0"/>
+                            <xs:element name="modifiedDate" type="xs:dateTime" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateCountryResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="country">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="id" type="xs:string"/>
+                            <xs:element name="name" type="xs:string"/>
+                            <xs:element name="code" type="xs:string"/>
+                            <xs:element name="coordinates" type="xs:string" minOccurs="0"/>
+                            <xs:element name="createdDate" type="xs:dateTime" minOccurs="0"/>
+                            <xs:element name="modifiedDate" type="xs:dateTime" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteCountryResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
